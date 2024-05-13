@@ -411,8 +411,6 @@ function Element:New(Idx, Config)
 		if NewValues then
 			Dropdown.Values = NewValues
 		end
-
-		Dropdown:BuildDropdownList()
 	end
 
 	function Dropdown:OnChanged(Func)
