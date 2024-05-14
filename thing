@@ -1268,35 +1268,8 @@ end, [22] = function()
                     if ah.X < B.X or ah.X > B.X + C.X or ah.Y < (B.Y - 20 - 1) or ah.Y > B.Y + C.Y then l:Close() end
                 end end)
         local A = h.ScrollFrame
-        function l.Open(B)
-            l.Opened = true
-            A.ScrollingEnabled = false
-            v.Visible = true
-            af:Create(u, TweenInfo.new(0.2, Enum.EasingStyle.Quart, Enum.EasingDirection.Out),
-                { Size = UDim2.fromScale(1, 1) }):Play()
-        end
 
-        function l.Close(B)
-            l.Opened = false
-            A.ScrollingEnabled = true
-            u.Size = UDim2.fromScale(1, 0.6)
-            v.Visible = false
-        end
 
-        function l.Display(B)
-            local C, D = l.Values, ''
-            if j.Multi then
-                for E, F in next, C do if l.Value[F] then D = D .. F .. ', ' end end
-                D = D:sub(1, #D - 2)
-            else D = l.Value or '' end
-            n.Text = (D == '' and '--' or D)
-        end
-
-        function l.GetActiveValues(B) if j.Multi then
-                local C = {}
-                for D, E in next, l.Value do table.insert(C, D) end
-                return C
-            else return l.Value and 1 or 0 end end
 
         function l.BuildDropdownList(B)
             local C, D = l.Values, {}
@@ -1366,6 +1339,38 @@ end, [22] = function()
             y()
         end
 
+        function l.Open(B)
+            l.BuildDropdownList(B)
+            l.Opened = true
+            A.ScrollingEnabled = false
+            v.Visible = true
+            af:Create(u, TweenInfo.new(0.2, Enum.EasingStyle.Quart, Enum.EasingDirection.Out),
+                { Size = UDim2.fromScale(1, 1) }):Play()
+        end
+
+        function l.Close(B)
+            l.Opened = false
+            A.ScrollingEnabled = true
+            u.Size = UDim2.fromScale(1, 0.6)
+            v.Visible = false
+        end
+
+        function l.Display(B)
+            local C, D = l.Values, ''
+            if j.Multi then
+                for E, F in next, C do if l.Value[F] then D = D .. F .. ', ' end end
+                D = D:sub(1, #D - 2)
+            else D = l.Value or '' end
+            n.Text = (D == '' and '--' or D)
+        end
+
+        function l.GetActiveValues(B) if j.Multi then
+                local C = {}
+                for D, E in next, l.Value do table.insert(C, D) end
+                return C
+            else return l.Value and 1 or 0 end end
+
+        
         function l.SetValues(B, C)
             if C then l.Values = C end
         end
