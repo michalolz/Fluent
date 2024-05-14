@@ -197,57 +197,6 @@ function Element:New(Idx, Config)
 		end
 	end)
 
-	local ScrollFrame = self.ScrollFrame
-	function Dropdown:Open()
-		Dropdown.Opened = true
-		ScrollFrame.ScrollingEnabled = false
-		DropdownHolderCanvas.Visible = true
-		TweenService:Create(
-			DropdownHolderFrame,
-			TweenInfo.new(0.2, Enum.EasingStyle.Quart, Enum.EasingDirection.Out),
-			{ Size = UDim2.fromScale(1, 1) }
-		):Play()
-	end
-
-	function Dropdown:Close()
-		Dropdown.Opened = false
-		ScrollFrame.ScrollingEnabled = true
-		DropdownHolderFrame.Size = UDim2.fromScale(1, 0.6)
-		DropdownHolderCanvas.Visible = false
-	end
-
-	function Dropdown:Display()
-		local Values = Dropdown.Values
-		local Str = ""
-
-		if Config.Multi then
-			for Idx, Value in next, Values do
-				if Dropdown.Value[Value] then
-					Str = Str .. Value .. ", "
-				end
-			end
-			Str = Str:sub(1, #Str - 2)
-		else
-			Str = Dropdown.Value or ""
-		end
-
-		DropdownDisplay.Text = (Str == "" and "--" or Str)
-	end
-
-	function Dropdown:GetActiveValues()
-		if Config.Multi then
-			local T = {}
-
-			for Value, Bool in next, Dropdown.Value do
-				table.insert(T, Value)
-			end
-
-			return T
-		else
-			return Dropdown.Value and 1 or 0
-		end
-	end
-
 	function Dropdown:BuildDropdownList()
 		local Values = Dropdown.Values
 		local Buttons = {}
@@ -392,6 +341,60 @@ function Element:New(Idx, Config)
 
 			Buttons[Button] = Table
 		end
+
+	local ScrollFrame = self.ScrollFrame
+	function Dropdown:Open()
+		Dropdown:BuildDropdownList()
+		Dropdown.Opened = true
+		ScrollFrame.ScrollingEnabled = false
+		DropdownHolderCanvas.Visible = true
+		TweenService:Create(
+			DropdownHolderFrame,
+			TweenInfo.new(0.2, Enum.EasingStyle.Quart, Enum.EasingDirection.Out),
+			{ Size = UDim2.fromScale(1, 1) }
+		):Play()
+	end
+
+	function Dropdown:Close()
+		Dropdown.Opened = false
+		ScrollFrame.ScrollingEnabled = true
+		DropdownHolderFrame.Size = UDim2.fromScale(1, 0.6)
+		DropdownHolderCanvas.Visible = false
+	end
+
+	function Dropdown:Display()
+		local Values = Dropdown.Values
+		local Str = ""
+
+		if Config.Multi then
+			for Idx, Value in next, Values do
+				if Dropdown.Value[Value] then
+					Str = Str .. Value .. ", "
+				end
+			end
+			Str = Str:sub(1, #Str - 2)
+		else
+			Str = Dropdown.Value or ""
+		end
+
+		DropdownDisplay.Text = (Str == "" and "--" or Str)
+	end
+
+	function Dropdown:GetActiveValues()
+		if Config.Multi then
+			local T = {}
+
+			for Value, Bool in next, Dropdown.Value do
+				table.insert(T, Value)
+			end
+
+			return T
+		else
+			return Dropdown.Value and 1 or 0
+		end
+	end
+
+	
 
 		ListSizeX = 0
 		for Button, Table in next, Buttons do
